@@ -1,7 +1,7 @@
 # ValorantScrimBot
 
 ## Tools
-I used [JDA]("https://github.com/DV8FromTheWorld/JDA") for this Discord Bot. 
+I used [JDA](https://github.com/DV8FromTheWorld/JDA) for this Discord Bot. 
 
 ## Summary
 

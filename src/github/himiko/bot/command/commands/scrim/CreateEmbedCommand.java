@@ -3,6 +3,7 @@ package github.himiko.bot.command.commands.scrim;
 import github.himiko.Main;
 import github.himiko.bot.BotBuilder;
 import github.himiko.bot.command.Command;
+import github.himiko.system.scrim.ScrimManager;
 import github.himiko.system.scrim.channel.ChannelManager;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
@@ -20,11 +21,21 @@ import java.util.concurrent.ExecutionException;
 
 public class CreateEmbedCommand extends Command {
     public CreateEmbedCommand() {
-        super("create", "creates embed for starting scrims", OptionType.STRING);
+        super("create", "creates embed for starting scrims", OptionType.STRING, "size");
     }
 
     @Override
     public void onActivity(String[] args, SlashCommandInteractionEvent event, boolean hasPermission, User author)  {
+
+        int size = Integer.parseInt(args[0]);
+
+        if(size == 0 ||  args[0] == null)
+        {
+            size = 10; // default size of an lobby
+        }
+
+        Main.scrimManager.createScrim(event.getChannel(), size);
+
         Button queButton = BotBuilder.buttonManager.getButtonByID("que-button").getButton();
         Button cancelButton = BotBuilder.buttonManager.getButtonByID("cancel-button").getButton();
         Button startButton = BotBuilder.buttonManager.getButtonByID("start-button").getButton();

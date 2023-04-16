@@ -16,6 +16,11 @@ public class ButtonManager {
         buttons.add(new CancelButton());
     }
 
+    public void addButton(Button button)
+    {
+        buttons.add(button);
+    }
+
     public Button getButtonByID(String id)
     {
         for(Button b : buttons)

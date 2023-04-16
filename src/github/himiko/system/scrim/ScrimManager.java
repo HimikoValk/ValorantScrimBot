@@ -1,13 +1,12 @@
 package github.himiko.system.scrim;
 
+import com.iwebpp.crypto.TweetNaclFast;
 import github.himiko.Main;
 import github.himiko.bot.BotBuilder;
 import github.himiko.system.logger.LogCategory;
 import github.himiko.system.scrim.exceptions.IllegalInteractionException;
-import net.dv8tion.jda.api.entities.Channel;
-import net.dv8tion.jda.api.entities.User;
-import net.dv8tion.jda.api.entities.UserSnowflake;
-import net.dv8tion.jda.api.entities.VoiceChannel;
+import github.himiko.system.statistics.StatisticManager;
+import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
 import net.dv8tion.jda.api.requests.restaction.ChannelAction;
 
@@ -17,13 +16,17 @@ import java.util.Random;
 
 public class ScrimManager {
 
+    public StatisticManager statisticManager;
+
     //LOBBY, LIST WITH USERES
     private static HashMap<String,ArrayList<User>> queList = new HashMap<>();
+    //LOBBY, TEAMLIST WITH USERES
+    private static HashMap<String, ArrayList<User>> teamMap = new HashMap<>();
     private static Random RANDOM = new Random();
 
     public ScrimManager()
     {
-
+        statisticManager = new StatisticManager();
     }
 
     /**
@@ -43,28 +46,66 @@ public class ScrimManager {
             printList(lobbyChannel);
             ArrayList<User> team2 = createRandomTeam(lobbyChannel);
 
+            teamMap.put(lobbyChannel.getName() + "-team1", team1);
+            teamMap.put(lobbyChannel.getName() + "-team2", team2);
+
             ChannelAction<VoiceChannel> team1VoiceChannel = event.getGuild().createVoiceChannel(lobbyChannel.getName() + "-team1");
-            team1VoiceChannel.submit();
+            try
+            {
+
+            BotBuilder.channelManager.addTeamChannel(team1VoiceChannel.complete());
 
             for(User user : team1)
             {
                 System.out.println("Team1:" + user.getName());
-                event.getGuild().getGuildChannelById(BotBuilder.channelManager.getChannelIDByName(lobbyChannel.getName() + "waiting-queue")).getGuild().moveVoiceMember(event.getGuild().getMemberById(user.getId()),team1VoiceChannel.complete()).queue();
+                System.out.println(BotBuilder.channelManager.getTeamChannelIDByName(lobbyChannel.getName() + "-team1"));
+                event.getGuild().getGuildChannelById(BotBuilder.channelManager.getTeamChannelIDByName(lobbyChannel.getName() + "-team1")).getGuild().moveVoiceMember(event.getGuild().getMemberById(user.getId()), BotBuilder.channelManager.getTeamChanelByName(lobbyChannel.getName() + "-team1")).queue();
             }
 
             ChannelAction<VoiceChannel> team2VoiceChannel = event.getGuild().createVoiceChannel(lobbyChannel.getName() + "-team2");
-            team2VoiceChannel.submit();
+
+            BotBuilder.channelManager.addTeamChannel(team2VoiceChannel.complete());
 
             for(User user : team2)
             {
                 System.out.println("Team2:" + user.getName());
-                event.getGuild().getGuildChannelById(BotBuilder.channelManager.getChannelIDByName(lobbyChannel.getName() + "waiting-queue")).getGuild().moveVoiceMember(event.getGuild().getMemberById(user.getId()),team2VoiceChannel.complete()).queue();
+                event.getGuild().getGuildChannelById(BotBuilder.channelManager.getTeamChannelIDByName(lobbyChannel.getName() + "-team2")).getGuild().moveVoiceMember(event.getGuild().getMemberById(user.getId()), BotBuilder.channelManager.getTeamChanelByName(lobbyChannel.getName() + "-team2")).queue();
+            }
+
+            }catch (Exception e)
+            {
+                e.printStackTrace();
+                return false;
             }
 
             return true;
         }
 
         return false;
+    }
+
+    /**
+     *
+     * @param lobbyChanel
+     * @param size
+     */
+    public void createScrim(Channel lobbyChanel, int size)
+    {
+        if(!doesLobbyExist(lobbyChanel)) {
+            queList.put(lobbyChanel.getName(), new ArrayList<>());
+        }else
+        {
+            Main.bot.scrimLogger.trace(this.getClass(), LogCategory.WARNING, "Lobby already Exist");
+        }
+    }
+
+    /**
+     *
+     * @param lobbyChannel
+     */
+    public void deleteScrim(Channel lobbyChannel)
+    {
+        queList.remove(lobbyChannel.getName(), queList.get(lobbyChannel.getName()));
     }
 
     /**
@@ -104,6 +145,12 @@ public class ScrimManager {
         }
     }
 
+    public void scrimFinished(Channel lobbyChannel)
+    {
+        teamMap.get(lobbyChannel.getName() + "-team1").clear();
+        teamMap.get(lobbyChannel.getName() + "-team2").clear();
+    }
+
     /**
      * Removes User by Using the Helper-Function {@link ScrimManager#doesUserExist(User, Channel)}
      * this function checks if the User exist in the Lobby/Queue
@@ -120,10 +167,41 @@ public class ScrimManager {
             return true;
         }else
         {
-            Main.bot.scrimLogger.trace(this.getClass(), LogCategory.ERROR, "User is not in Queue!");
+            Main.bot.scrimLogger.trace(this.getClass(), LogCategory.WARNING, "User is not in Queue!");
             return false;
         }
 
+    }
+
+    public ArrayList<User> getTeam1(Channel lobbyChannel)
+    {
+        return teamMap.get(lobbyChannel.getName() + "-team1");
+    }
+
+    public ArrayList<User> getTeam2(Channel lobbyChannel)
+    {
+        return teamMap.get(lobbyChannel.getName() + "-team2");
+    }
+
+    public boolean isUserInTeam(User user, Channel lobbyChannel)
+    {
+        for(User u : teamMap.get(lobbyChannel.getName()+ "-team1"))
+        {
+            if(u.getId().contains(user.getId()))
+            {
+                return true;
+            }
+        }
+
+        for(User us : teamMap.get(lobbyChannel.getName() + "-team2"))
+        {
+            if(us.getId().contains(user.getId()))
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
@@ -140,6 +218,20 @@ public class ScrimManager {
             return true;
         }
         return false;
+    }
+
+    public int getUserCounter(Channel lobbyChannel)
+    {
+        int counter = 0;
+
+        for(User user : queList.get(lobbyChannel.getName()))
+        {
+            if(user != null)
+            {
+                counter++;
+            }
+        }
+        return counter;
     }
 
     public int getSizeOfLobby(Channel lobbyChannel)
@@ -172,14 +264,15 @@ public class ScrimManager {
         int counter = 0;
         ArrayList<User> queueMembers = queList.get(lobbyChannel.getName());
         ArrayList<User> teamMembers = new ArrayList<>();
-        User addData = queueMembers.get(RANDOM.nextInt(queueMembers.size()));
+        User addData = queueMembers.get(0);
 
-        while(queueMembers != null)
+        while(queueMembers.size() != 0)
         {
-            if(counter < 5)
+            if(counter <= 5)
             {
-                if(teamMembers == null)
+                if(teamMembers.size() == 0)
                 {
+                    System.out.println("Added" + addData.getName());
                     teamMembers.add(addData);
                     queueMembers.remove(addData);
                     removeFromQue(addData, lobbyChannel);
@@ -187,13 +280,23 @@ public class ScrimManager {
                 {
                     while(isUserAlreadyInTeam(addData, teamMembers))
                     {
-                        addData = queueMembers.get(RANDOM.nextInt(queueMembers.size()));
+                        System.out.println("Ok" + addData.getName());
+                        for(User user : queueMembers)
+                        {
+                            if(!user.getId().contains(addData.getId()))
+                            {
+                                addData = user;
+                            }
+                        }
                     }
                     teamMembers.add(addData);
                     queueMembers.remove(addData);
                     removeFromQue(addData, lobbyChannel);
                 }
 
+            }else
+            {
+                break;
             }
 
             counter++;

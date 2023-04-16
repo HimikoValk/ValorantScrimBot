@@ -1,5 +1,6 @@
 package github.himiko.system.scrim.channel;
 
+import net.dv8tion.jda.api.entities.AudioChannel;
 import net.dv8tion.jda.api.entities.Channel;
 import net.dv8tion.jda.api.entities.GuildChannel;
 import net.dv8tion.jda.api.entities.VoiceChannel;
@@ -21,12 +22,26 @@ public class ChannelManager {
          teamChannels.add(voiceChannel);
      }
 
-     public String getTeamChannelIDByName(String name)
+     public VoiceChannel getTeamChanelByName(String name)
      {
-         for(VoiceChannel c : channels)
+         for(VoiceChannel c : teamChannels)
          {
              if(c.getName().contains(name))
              {
+                 return c;
+             }
+         }
+         return null;
+     }
+
+     public String getTeamChannelIDByName(String name)
+     {
+         for(VoiceChannel c : teamChannels)
+         {
+             System.out.println(c.getName());
+             if(c.getName().contains(name))
+             {
+
                  return c.getId();
              }
          }

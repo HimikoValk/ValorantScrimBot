@@ -1,6 +1,8 @@
 # ValorantScrimBot
-Hello there, 
-i will now describe you how you can use the bot.
+
+## Summary
+
+1.[Requierments](#Requierments)
 
 # Requierments
 --------------
@@ -10,6 +12,9 @@ i will now describe you how you can use the bot.
 
 # Tutorial Describtion
 --------------
+Hello there, 
+i will now describe you how you can use the bot.
+
 1.You allready Created you own bot (https://discord.com/developers/applications)
 2.You go to your Bot Setting and will check all Checkboxes in the Category Privileged Gateway Intents! </br>
 3.Then you Scroll up and Reset the Token so you can copy it </br>

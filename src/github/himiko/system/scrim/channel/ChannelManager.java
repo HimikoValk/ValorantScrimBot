@@ -1,15 +1,18 @@
 package github.himiko.system.scrim.channel;
 
-import net.dv8tion.jda.api.entities.AudioChannel;
-import net.dv8tion.jda.api.entities.Channel;
-import net.dv8tion.jda.api.entities.GuildChannel;
-import net.dv8tion.jda.api.entities.VoiceChannel;
+import net.dv8tion.jda.api.entities.*;
 
 import java.util.ArrayList;
 
 public class ChannelManager {
+     private static ArrayList<Category> categories = new ArrayList<>();
      private static ArrayList<VoiceChannel> channels = new ArrayList<>();
      private static ArrayList<VoiceChannel> teamChannels = new ArrayList<>();
+
+     public void addCateogry(Category category)
+     {
+            categories.add(category);
+     }
 
      public void addChannel(VoiceChannel voiceChannel)
      {
@@ -20,6 +23,19 @@ public class ChannelManager {
      public void addTeamChannel(VoiceChannel voiceChannel)
      {
          teamChannels.add(voiceChannel);
+     }
+
+     public Category getCategoryByName(String name)
+     {
+         for(Category c : categories)
+         {
+             if(c.getName().toLowerCase().contains(name.toLowerCase()))
+             {
+                 return c;
+             }
+         }
+
+         return null;
      }
 
      public VoiceChannel getTeamChanelByName(String name)

@@ -8,7 +8,7 @@ public class ScrimLogger implements Logger {
 
     @Override
     public void trace(Class<?> callingClass, LogCategory logCategory, String message) {
-        LoggerUtil.createLog( "["+ callingClass.getName()+".java Is Calling] Message:"+ message,logCategory);
+        LoggerUtil.createLog( " ["+ callingClass.getName()+".java Is Calling] \tMessage:"+ message,logCategory);
     }
 
     @Override

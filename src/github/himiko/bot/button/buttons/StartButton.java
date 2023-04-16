@@ -2,6 +2,7 @@ package github.himiko.bot.button.buttons;
 
 import github.himiko.Main;
 import github.himiko.bot.button.Button;
+import github.himiko.system.logger.LogCategory;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
 
@@ -18,6 +19,7 @@ public class StartButton extends Button {
             if(Main.scrimManager.startScrim(event.getChannel(), event))
             {
                 event.reply("<#" + event.getChannel().getId() + "> Started Successfully!").queue();
+                Main.bot.scrimLogger.trace(this.getClass(), LogCategory.INFORMATION,"Started Lobby:" + event.getChannel().getName() +" Successfully!");
             }else
             {
                 event.reply("Sorry but you need to be 10 Players before Starting!").queue();

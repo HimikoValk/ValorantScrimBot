@@ -22,6 +22,8 @@ public class ScrimManager {
     private static HashMap<String,ArrayList<User>> queList = new HashMap<>();
     //LOBBY, TEAMLIST WITH USERES
     private static HashMap<String, ArrayList<User>> teamMap = new HashMap<>();
+    //LOBBY, STATUS
+    private static HashMap<String, Boolean> status = new HashMap<>();
     private static Random RANDOM = new Random();
 
     public ScrimManager()
@@ -35,21 +37,23 @@ public class ScrimManager {
      * Them Moving the Players into it
      * @param lobbyChannel
      * @param event
-     * @return
+     * @return boolean
      */
     public boolean startScrim(Channel lobbyChannel, ButtonInteractionEvent event)
     {
-        if(queList.get(lobbyChannel.getName()).size() == 10)
+        if(queList.get(lobbyChannel.getName()).size() == 2)
         {
             ArrayList<User> team1 = createRandomTeam(lobbyChannel);
             //Just for watching the Process of Creating the Teams (Only Visual for the Console)
             printList(lobbyChannel);
             ArrayList<User> team2 = createRandomTeam(lobbyChannel);
 
+            Main.bot.scrimLogger.trace(this.getClass(), LogCategory.INFORMATION,"Successfully Created Teams!");
+
             teamMap.put(lobbyChannel.getName() + "-team1", team1);
             teamMap.put(lobbyChannel.getName() + "-team2", team2);
 
-            ChannelAction<VoiceChannel> team1VoiceChannel = event.getGuild().createVoiceChannel(lobbyChannel.getName() + "-team1");
+            ChannelAction<VoiceChannel> team1VoiceChannel = BotBuilder.channelManager.getCategoryByName("Valorant Scrims").createVoiceChannel(lobbyChannel.getName() + "-team1");
             try
             {
 
@@ -62,9 +66,10 @@ public class ScrimManager {
                 event.getGuild().getGuildChannelById(BotBuilder.channelManager.getTeamChannelIDByName(lobbyChannel.getName() + "-team1")).getGuild().moveVoiceMember(event.getGuild().getMemberById(user.getId()), BotBuilder.channelManager.getTeamChanelByName(lobbyChannel.getName() + "-team1")).queue();
             }
 
-            ChannelAction<VoiceChannel> team2VoiceChannel = event.getGuild().createVoiceChannel(lobbyChannel.getName() + "-team2");
-
+            ChannelAction<VoiceChannel> team2VoiceChannel =  BotBuilder.channelManager.getCategoryByName("Valorant Scrims").createVoiceChannel(lobbyChannel.getName() + "-team2");
             BotBuilder.channelManager.addTeamChannel(team2VoiceChannel.complete());
+
+            Main.bot.scrimLogger.trace(this.getClass(), LogCategory.INFORMATION,"Successfully Created Voice-Channels!");
 
             for(User user : team2)
             {
@@ -72,12 +77,14 @@ public class ScrimManager {
                 event.getGuild().getGuildChannelById(BotBuilder.channelManager.getTeamChannelIDByName(lobbyChannel.getName() + "-team2")).getGuild().moveVoiceMember(event.getGuild().getMemberById(user.getId()), BotBuilder.channelManager.getTeamChanelByName(lobbyChannel.getName() + "-team2")).queue();
             }
 
+            Main.bot.scrimLogger.trace(this.getClass(), LogCategory.INFORMATION,"Successfully  Moved Teams to Voice Channels!");
+
             }catch (Exception e)
             {
                 e.printStackTrace();
                 return false;
             }
-
+            status.put(lobbyChannel.getName(), true);
             return true;
         }
 
@@ -109,7 +116,7 @@ public class ScrimManager {
     }
 
     /**
-     * Adds Users to there Lobby by first using the Helper-Function {@link ScrimManager#doesUserExist(User, Channel)}
+     * Adds Users to their Lobby by first using the Helper-Function {@link ScrimManager#doesUserExist(User, Channel)}
      * which checks if User is already in a Lobby/Queue
      * @param user
      * @param lobbyChannel
@@ -268,11 +275,11 @@ public class ScrimManager {
 
         while(queueMembers.size() != 0)
         {
-            if(counter <= 5)
+            if(counter < 1)
             {
                 if(teamMembers.size() == 0)
                 {
-                    System.out.println("Added" + addData.getName());
+                    //System.out.println("Added" + addData.getName());
                     teamMembers.add(addData);
                     queueMembers.remove(addData);
                     removeFromQue(addData, lobbyChannel);
@@ -280,7 +287,7 @@ public class ScrimManager {
                 {
                     while(isUserAlreadyInTeam(addData, teamMembers))
                     {
-                        System.out.println("Ok" + addData.getName());
+                        //System.out.println("Ok" + addData.getName());
                         for(User user : queueMembers)
                         {
                             if(!user.getId().contains(addData.getId()))
@@ -303,6 +310,18 @@ public class ScrimManager {
         }
 
         return teamMembers;
+    }
+
+    public boolean isLobbyRunning(Channel lobbychannel)
+    {
+        try
+        {
+            return status.get(lobbychannel.getName());
+        }catch (Exception e)
+        {
+            Main.bot.scrimLogger.trace(this.getClass(), LogCategory.WARNING, e.getMessage());
+            return false;
+        }
     }
 
     private boolean isUserAlreadyInTeam(User user, ArrayList<User> teamMembers)

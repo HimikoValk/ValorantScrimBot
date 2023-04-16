@@ -25,6 +25,7 @@ public class CreateEmbedCommand extends Command {
     @Override
     public void onActivity(String[] args, SlashCommandInteractionEvent event, boolean hasPermission, User author)  {
 
+        // No need to do this I was drunk or something
         int size = Integer.parseInt(args[0]);
 
         if(size == 0 ||  args[0] == null)

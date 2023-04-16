@@ -12,7 +12,15 @@ public class Main {
 
         try
         {
-            bot = new BotBuilder();
+            //System.out.println(args.length);
+            if(args.length > 0)
+            {
+                bot = BotBuilder.createForYourBot(args[0]);
+            }else
+            {
+                bot = BotBuilder.createDefault();
+            }
+
             scrimManager = new ScrimManager();
         }catch (Exception e)
         {

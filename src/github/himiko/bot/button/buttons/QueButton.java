@@ -24,7 +24,7 @@ public class QueButton extends Button {
         if(doesUserExist(author, queChannel))
         {
             if(Main.scrimManager.addUserToList(author,event.getChannel())) {
-                event.reply("<@" + author.getId() + ">" + " Has been Successfully Added to Queue!" + "\n" + Main.scrimManager.getUserCounter(event.getChannel()) + "/" + 10).queue();
+                event.reply("<@" + author.getId() + ">" + " Has been Successfully Added to Queue!" + "\n" + Main.scrimManager.getUserCounter(event.getChannel()) + "/" + Main.scrimManager.getSizeOfLobby(event.getChannel())).queue();
             }else
             {
                 event.reply("<@" + author.getId() + ">" + " You are already in Queue or The Queue is already Full!").queue();

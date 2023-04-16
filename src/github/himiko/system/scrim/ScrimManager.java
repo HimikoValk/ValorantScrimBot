@@ -11,6 +11,7 @@ import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
 import net.dv8tion.jda.api.requests.restaction.ChannelAction;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Random;
 
@@ -24,6 +25,9 @@ public class ScrimManager {
     private static HashMap<String, ArrayList<User>> teamMap = new HashMap<>();
     //LOBBY, STATUS
     private static HashMap<String, Boolean> status = new HashMap<>();
+    //LOBBY, SIZE
+    private static HashMap<String, Integer> lobbySizeMap = new HashMap<>();
+
     private static Random RANDOM = new Random();
 
     public ScrimManager()
@@ -41,12 +45,14 @@ public class ScrimManager {
      */
     public boolean startScrim(Channel lobbyChannel, ButtonInteractionEvent event)
     {
-        if(queList.get(lobbyChannel.getName()).size() == 2)
+        if(queList.get(lobbyChannel.getName()).size() == lobbySizeMap.get(lobbyChannel.getName()))
         {
-            ArrayList<User> team1 = createRandomTeam(lobbyChannel);
-            //Just for watching the Process of Creating the Teams (Only Visual for the Console)
-            printList(lobbyChannel);
-            ArrayList<User> team2 = createRandomTeam(lobbyChannel);
+            HashMap<String, ArrayList<User>> teams = createRandomTeam(event.getChannel(), queList.get(lobbyChannel.getName()).size() / 2 );
+
+            System.out.println("Teams Size:" +teams.size());
+
+            ArrayList<User> team1 = teams.get("team1");
+            ArrayList<User> team2 = teams.get("team2");
 
             Main.bot.scrimLogger.trace(this.getClass(), LogCategory.INFORMATION,"Successfully Created Teams!");
 
@@ -100,9 +106,10 @@ public class ScrimManager {
     {
         if(!doesLobbyExist(lobbyChanel)) {
             queList.put(lobbyChanel.getName(), new ArrayList<>());
+            lobbySizeMap.put(lobbyChanel.getName(), size);
         }else
         {
-            Main.bot.scrimLogger.trace(this.getClass(), LogCategory.WARNING, "Lobby already Exist");
+            Main.bot.scrimLogger.trace(this.getClass(), LogCategory.WARNING, "Lobby already Exist!");
         }
     }
 
@@ -112,7 +119,12 @@ public class ScrimManager {
      */
     public void deleteScrim(Channel lobbyChannel)
     {
-        queList.remove(lobbyChannel.getName(), queList.get(lobbyChannel.getName()));
+        if(doesLobbyExist(lobbyChannel)) {
+            queList.remove(lobbyChannel.getName(), queList.get(lobbyChannel.getName()));
+        }else
+        {
+            Main.bot.scrimLogger.trace(this.getClass(), LogCategory.WARNING, "Lobby dose not Exist!");
+        }
     }
 
     /**
@@ -243,7 +255,7 @@ public class ScrimManager {
 
     public int getSizeOfLobby(Channel lobbyChannel)
     {
-        return queList.get(lobbyChannel.getName()).size();
+        return lobbySizeMap.get(lobbyChannel.getName());
     }
 
     public void printList(Channel lobbyChannel)
@@ -266,50 +278,30 @@ public class ScrimManager {
      * @param lobbyChannel
      * @return ArrayList<User>
      */
-    public ArrayList<User> createRandomTeam(Channel lobbyChannel)
+    public HashMap<String,ArrayList<User>> createRandomTeam(Channel lobbyChannel, int teamSize)
     {
-        int counter = 0;
-        ArrayList<User> queueMembers = queList.get(lobbyChannel.getName());
-        ArrayList<User> teamMembers = new ArrayList<>();
-        User addData = queueMembers.get(0);
+        HashMap<String ,ArrayList<User>> teams = new HashMap<>();
+        ArrayList<User> players = queList.get(lobbyChannel.getName());
 
-        while(queueMembers.size() != 0)
+        Collections.shuffle(players);
+
+        ArrayList<User> team = new ArrayList<>();
+
+        int teamCounter = 1;
+
+        for(int i = 0; i < players.size(); i++)
         {
-            if(counter < 1)
+            if(i % teamSize == 0)
             {
-                if(teamMembers.size() == 0)
-                {
-                    //System.out.println("Added" + addData.getName());
-                    teamMembers.add(addData);
-                    queueMembers.remove(addData);
-                    removeFromQue(addData, lobbyChannel);
-                }else
-                {
-                    while(isUserAlreadyInTeam(addData, teamMembers))
-                    {
-                        //System.out.println("Ok" + addData.getName());
-                        for(User user : queueMembers)
-                        {
-                            if(!user.getId().contains(addData.getId()))
-                            {
-                                addData = user;
-                            }
-                        }
-                    }
-                    teamMembers.add(addData);
-                    queueMembers.remove(addData);
-                    removeFromQue(addData, lobbyChannel);
-                }
-
-            }else
-            {
-                break;
+                String teamName = "team" + teamCounter;
+                team = new ArrayList<>();
+                teams.put(teamName, team);
+                teamCounter++;
             }
-
-            counter++;
+            team.add(players.get(i));
         }
 
-        return teamMembers;
+        return teams;
     }
 
     public boolean isLobbyRunning(Channel lobbychannel)

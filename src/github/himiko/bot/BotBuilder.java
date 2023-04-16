@@ -20,7 +20,7 @@ import javax.security.auth.login.LoginException;
 
 public class BotBuilder {
 
-    private final Dotenv config;
+    private Dotenv config;
 
     private DefaultShardManagerBuilder builder = null;
 
@@ -38,7 +38,16 @@ public class BotBuilder {
 
     public static ChannelManager channelManager = new ChannelManager();
 
-    public BotBuilder() throws LoginException
+    public static BotBuilder createDefault() throws LoginException {
+        return new BotBuilder();
+    }
+
+    public static BotBuilder createForYourBot(String token) throws LoginException
+    {
+        return new BotBuilder(token);
+    }
+
+    private BotBuilder() throws LoginException
     {
         //LoggerBuilder
         this.scrimLogger = new ScrimLogger();
@@ -47,6 +56,22 @@ public class BotBuilder {
         this.config = Dotenv.configure().load();
         //setting up bot
         this.builder = DefaultShardManagerBuilder.createDefault(config.get("TOKEN"));
+        this.builder.setStatus(OnlineStatus.ONLINE);
+        this.builder.setActivity(Activity.of(Activity.ActivityType.PLAYING,"Scrims | Developer himiko"));
+        this.builder.enableIntents(GatewayIntent.GUILD_PRESENCES, GatewayIntent.GUILD_MEMBERS, GatewayIntent.GUILD_MESSAGES);
+        this.builder.setMemberCachePolicy(MemberCachePolicy.ALL);
+        this.builder.setChunkingFilter(ChunkingFilter.ALL);
+        this.builder.enableCache(CacheFlag.ONLINE_STATUS);
+        //Login
+        this.shardManager = builder.build();
+        this.eventHandler = new EventHandler(this.shardManager);
+    }
+
+    private BotBuilder(String token) throws LoginException {
+        this.scrimLogger = new ScrimLogger();
+        this.loggerBuilder = LoggerBuilder.createLogger(this.scrimLogger.getClass());
+        //setting up bot
+        this.builder = DefaultShardManagerBuilder.createDefault(token);
         this.builder.setStatus(OnlineStatus.ONLINE);
         this.builder.setActivity(Activity.of(Activity.ActivityType.PLAYING,"Scrims | Developer himiko"));
         this.builder.enableIntents(GatewayIntent.GUILD_PRESENCES, GatewayIntent.GUILD_MEMBERS, GatewayIntent.GUILD_MESSAGES);

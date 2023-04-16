@@ -31,6 +31,6 @@ i will now describe you how you can use the bot.
 
 Congraturaltions you have Successfully added a Discord bot to your Server and cna now play Scrims with it!
 
-#Tutorial Gif
+# Tutorial Gif
 
 ![](https://s11.gifyu.com/images/ezgif.com-video-to-gif6ac2e23520370133.gif)

@@ -3,7 +3,9 @@ package github.himiko.bot;
 import github.himiko.bot.button.ButtonManager;
 import github.himiko.bot.command.CommandManager;
 import github.himiko.bot.events.EventHandler;
+import github.himiko.system.logger.LoggerBuilder;
 import github.himiko.system.scrim.channel.ChannelManager;
+import github.himiko.system.scrim.logger.ScrimLogger;
 import io.github.cdimascio.dotenv.Dotenv;
 import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.Activity;
@@ -26,6 +28,10 @@ public class BotBuilder {
 
     private final EventHandler eventHandler;
 
+    public ScrimLogger scrimLogger;
+
+    public final LoggerBuilder loggerBuilder;
+
     public static CommandManager commandManager = new CommandManager();
 
     public static ButtonManager buttonManager = new ButtonManager();
@@ -34,6 +40,9 @@ public class BotBuilder {
 
     public BotBuilder() throws LoginException
     {
+        //LoggerBuilder
+        this.scrimLogger = new ScrimLogger();
+        this.loggerBuilder = LoggerBuilder.createLogger(this.scrimLogger.getClass());
         //Loading config
         this.config = Dotenv.configure().load();
         //setting up bot

@@ -26,7 +26,7 @@ public class QueButton extends Button {
                 event.reply("<@" + author.getId() + ">" + " Has been Successfully Added to Queue!" + "\n" + Main.scrimManager.getSizeOfLobby(event.getChannel()) + "/10").queue();
             }else
             {
-                event.reply("<@" + author.getId() + ">" + " You are already in Queue!").queue();
+                event.reply("<@" + author.getId() + ">" + " You are already in Queue or The Queue is already Full!").queue();
             }
             Main.scrimManager.printList(event.getChannel());
         }else

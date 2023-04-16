@@ -46,6 +46,11 @@ Congraturaltions you have Successfully added a Discord bot to your Server and cn
 
 ![](https://s11.gifyu.com/images/ezgif.com-video-to-gif6ac2e23520370133.gif)
 
-#Commands
+### Commands
+
+| Command       | Arguments          | Describtion                                                            |
+| ------------- |:------------------:| ----------------------------------------------------------------------:|
+| create        | size:int           | Creates the Valorant Scroms Category/ the Lobby-queue Channel and more |
+| stats         | 0                  | Shows Stats (Win/Looses) from the author                               |
 
 

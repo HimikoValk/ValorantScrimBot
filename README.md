@@ -8,7 +8,7 @@ I used [JDA](https://github.com/DV8FromTheWorld/JDA) for this Discord Bot.
 1. [Requierments](#Requierments)
 2. [Tutorial](#Tutorial-Describtion)
 3. [Tutorial-Gif](#Tutorial-Gif)
-4. 
+4. [Commands](#Commands)
 
 # Requierments
 --------------

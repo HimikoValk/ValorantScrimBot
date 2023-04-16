@@ -9,7 +9,7 @@ I used [JDA](https://github.com/DV8FromTheWorld/JDA) for this Discord Bot.
 2. [Tutorial](#Tutorial-Describtion)
 3. [Tutorial-Gif](#Tutorial-Gif)
 4. [Commands](#Commands)
-5. [TODO](#TODO)
+5. [TO-DO](#TO-DO)
 
 # Requierments
 --------------
@@ -55,7 +55,7 @@ Congraturaltions you have Successfully added a Discord bot to your Server and cn
 | stats         | 0                  | Shows Stats (Win/Looses) from the author                               |
 
 
-### TODO
+### TO-DO
 
 | TODO                | Status          |
 | ------------------- |:---------------:|

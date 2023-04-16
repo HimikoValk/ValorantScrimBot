@@ -9,6 +9,7 @@ I used [JDA](https://github.com/DV8FromTheWorld/JDA) for this Discord Bot.
 2. [Tutorial](#Tutorial-Describtion)
 3. [Tutorial-Gif](#Tutorial-Gif)
 4. [Commands](#Commands)
+5. []
 
 # Requierments
 --------------
@@ -52,5 +53,12 @@ Congraturaltions you have Successfully added a Discord bot to your Server and cn
 | ------------- |:------------------:| ----------------------------------------------------------------------:|
 | create        | size:int           | Creates the Valorant Scroms Category/ the Lobby-queue Channel and more |
 | stats         | 0                  | Shows Stats (Win/Looses) from the author                               |
+
+
+### TODO
+
+| TODO                | Status          |
+| ------------------- |:---------------:|
+| Fix createTeam algo | Open            |
 
 

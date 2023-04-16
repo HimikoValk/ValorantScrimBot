@@ -33,4 +33,4 @@ Congraturaltions you have Successfully added a Discord bot to your Server and cn
 
 #Tutorial Gif
 
-[![](https://s12.gifyu.com/images/How-to-use.gif)]
+![](https://media0.giphy.com/media/IcifS1qG3YFlS/giphy.gif)

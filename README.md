@@ -4,7 +4,7 @@ i will now describe you how you can use the bot.
 
 # Requierments
 --------------
-1.Download Java (https://www.java.com/de/download/manual.jsp)
+1.Download Java (https://www.java.com/de/download/manual.jsp) </br>
 2.Download Java SDK (https://www.oracle.com/java/technologies/javase/jdk19-archive-downloads.html)
 
 

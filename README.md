@@ -1,9 +1,14 @@
 # ValorantScrimBot
 
+## Tools
+I used [JDA]("https://github.com/DV8FromTheWorld/JDA") for this Discord Bot. 
+
 ## Summary
 
 1. [Requierments](#Requierments)
 2. [Tutorial](#Tutorial-Describtion)
+3. [Tutorial-Gif](#Tutorial-Gif)
+4. 
 
 # Requierments
 --------------
@@ -40,3 +45,7 @@ Congraturaltions you have Successfully added a Discord bot to your Server and cn
 # Tutorial Gif
 
 ![](https://s11.gifyu.com/images/ezgif.com-video-to-gif6ac2e23520370133.gif)
+
+#Commands
+
+

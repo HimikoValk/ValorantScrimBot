@@ -53,12 +53,15 @@ Congraturaltions you have Successfully added a Discord bot to your Server and cn
 | ------------- |:------------------:| ----------------------------------------------------------------------:|
 | create        | size:int           | Creates the Valorant Scroms Category/ the Lobby-queue Channel and more |
 | stats         | 0                  | Shows Stats (Win/Looses) from the author                               |
+| clear         | 0                  | Delets all Channels/Categorys etc.                                     |
+| mapvote       | 0                  | Creates Embed with Valorant Maps as Buttons                            |
 
 
 ### TO-DO
 
 | TODO                | Status          |
 | ------------------- |:---------------:|
-| Fix createTeam algo | Open            |
+| Fix createTeam algo | Closed          |
+| Add Permissionlevel | Open            |
 
 

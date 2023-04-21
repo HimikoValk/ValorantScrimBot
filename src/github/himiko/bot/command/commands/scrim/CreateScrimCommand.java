@@ -4,10 +4,7 @@ import github.himiko.Main;
 import github.himiko.bot.BotBuilder;
 import github.himiko.bot.command.Command;
 import github.himiko.system.logger.LogCategory;
-import github.himiko.system.scrim.ScrimManager;
-import github.himiko.system.scrim.channel.ChannelManager;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
@@ -15,10 +12,9 @@ import net.dv8tion.jda.api.interactions.components.buttons.Button;
 import net.dv8tion.jda.api.requests.restaction.ChannelAction;
 
 import java.awt.*;
-import java.util.concurrent.ExecutionException;
 
-public class CreateEmbedCommand extends Command {
-    public CreateEmbedCommand() {
+public class CreateScrimCommand extends Command {
+    public CreateScrimCommand() {
         super("create", "creates embed for starting scrims", OptionType.STRING, "size");
     }
 

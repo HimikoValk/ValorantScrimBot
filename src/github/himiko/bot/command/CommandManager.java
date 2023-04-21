@@ -1,6 +1,6 @@
 package github.himiko.bot.command;
 
-import github.himiko.bot.command.commands.scrim.CreateEmbedCommand;
+import github.himiko.bot.command.commands.scrim.CreateScrimCommand;
 import github.himiko.bot.command.commands.scrim.MapSelectionCommand;
 import github.himiko.bot.command.commands.stats.StatsCommand;
 import github.himiko.bot.command.commands.utils.DeleteCommand;
@@ -14,7 +14,7 @@ public class CommandManager {
     public CommandManager()
     {
         //Scrim Commands
-        commands.add(new CreateEmbedCommand());
+        commands.add(new CreateScrimCommand());
         commands.add(new MapSelectionCommand());
 
         //Stats Commands

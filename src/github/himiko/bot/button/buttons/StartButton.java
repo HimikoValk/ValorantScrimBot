@@ -14,19 +14,21 @@ public class StartButton extends Button {
 
     @Override
     public void onInteraction(User author, ButtonInteractionEvent event) {
-        if(Main.scrimManager.isUserInQueue(author, event.getChannel()))
-        {
-            if(Main.scrimManager.startScrim(event.getChannel(), event))
-            {
-                event.reply("<#" + event.getChannel().getId() + "> Started Successfully!").queue();
-                Main.bot.scrimLogger.trace(this.getClass(), LogCategory.INFORMATION,"Started Lobby:" + event.getChannel().getName() +" Successfully!");
-            }else
-            {
-                event.reply("Sorry but you need to be 10 Players before Starting!").queue();
+        if(Main.scrimManager.isUserInQueue(author, event.getChannel())) {
+            if (!Main.scrimManager.isLobbyRunning(event.getChannel())) {
+
+                if (Main.scrimManager.startScrim(event.getChannel(), event)) {
+                    event.editMessage("Status: Selecting Map").queue();
+                    Main.bot.scrimLogger.trace(this.getClass(), LogCategory.INFORMATION, "Started Lobby:" + event.getChannel().getName() + " Successfully!");
+                } else {
+                    //event.reply("Sorry but you need to be 10 Players before Starting!").queue();
+                }
+            } else {
+                //event.reply("The Lobby is already Running!").queue();
             }
         }else
         {
-            event.reply("<@" + author.getId() + "> You are not a Member of the Lobby!").queue();
+           //event.reply("<@" + author.getId() + "> You are not a Member of the Lobby!").queue();
         }
     }
 }

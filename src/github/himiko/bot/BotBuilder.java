@@ -4,6 +4,7 @@ import github.himiko.bot.button.ButtonManager;
 import github.himiko.bot.command.CommandManager;
 import github.himiko.bot.events.EventHandler;
 import github.himiko.system.logger.LoggerBuilder;
+import github.himiko.system.map.MapManager;
 import github.himiko.system.scrim.channel.ChannelManager;
 import github.himiko.system.scrim.logger.ScrimLogger;
 import io.github.cdimascio.dotenv.Dotenv;
@@ -32,11 +33,14 @@ public class BotBuilder {
 
     public final LoggerBuilder loggerBuilder;
 
+    public static MapManager mapManager = new MapManager();
+
     public static CommandManager commandManager = new CommandManager();
 
     public static ButtonManager buttonManager = new ButtonManager();
 
     public static ChannelManager channelManager = new ChannelManager();
+
 
     public static BotBuilder createDefault() throws LoginException {
         return new BotBuilder();

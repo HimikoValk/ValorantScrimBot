@@ -54,7 +54,7 @@ public class CreateEmbedCommand extends Command {
             category = event.getGuild().createCategory("Valorant Scrims").complete();
         }
 
-        BotBuilder.channelManager.addCateogry(category);
+        BotBuilder.channelManager.addCategory(category);
 
         ChannelAction<VoiceChannel> channel = category.createVoiceChannel(event.getChannel().getName() + "-waiting-queue");
 

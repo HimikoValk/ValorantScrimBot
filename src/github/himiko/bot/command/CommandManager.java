@@ -1,7 +1,9 @@
 package github.himiko.bot.command;
 
 import github.himiko.bot.command.commands.scrim.CreateEmbedCommand;
+import github.himiko.bot.command.commands.scrim.MapSelectionCommand;
 import github.himiko.bot.command.commands.stats.StatsCommand;
+import github.himiko.bot.command.commands.utils.DeleteCommand;
 import github.himiko.bot.command.commands.utils.NukeCommand;
 
 import java.util.ArrayList;
@@ -13,12 +15,14 @@ public class CommandManager {
     {
         //Scrim Commands
         commands.add(new CreateEmbedCommand());
+        commands.add(new MapSelectionCommand());
 
         //Stats Commands
         commands.add(new StatsCommand());
 
         //Util Commands
         commands.add(new NukeCommand());
+        commands.add(new DeleteCommand());
     }
 
     public Command getCommandByName(String name)

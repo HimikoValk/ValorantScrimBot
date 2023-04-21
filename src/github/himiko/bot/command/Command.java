@@ -37,6 +37,15 @@ public abstract class Command {
         this.optionType = optionType;
     }
 
+    public Command(String commandName, String commandDescription)
+    {
+        this.commandName = commandName;
+        this.commandDescription = commandDescription;
+        this.permissionLevel = null;
+        this.args = null;
+        this.optionType = OptionType.STRING;
+    }
+
     public Command(String commandName, String commandDescription, OptionType optionType, Permission permissionLevel, String... args)
     {
         this.commandName = commandName;

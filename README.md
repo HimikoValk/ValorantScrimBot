@@ -22,7 +22,7 @@ I used [JDA](https://github.com/DV8FromTheWorld/JDA) for this Discord Bot. 
 Hello there, 
 i will now describe how you can use the bot.
 
-1.You already created your own bot (https://discord.com/developers/applications)
+1.You already created your own bot (https://discord.com/developers/applications) </br>
 2.You go to your bot settings and check all checkboxes in the category Privileged Gateway Intents! </br>
 3. Then you scroll up and reset the token so you can copy it </br>
 4. You go to your folder where the jar is saved </br>

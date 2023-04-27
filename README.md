@@ -49,7 +49,7 @@ Congratulations! You have successfully added a Discord bot to your server, and y
 
 ### Commands
 
-| Command       | Arguments          | Describtion                                                            |
+| Command       | Arguments          | Description                                                            |
 | ------------- |:------------------:| ----------------------------------------------------------------------:|
 | create        | size:int           | Creates the Valorant Scroms Category, the Lobby-Queue Channel, and more |
 | stats         | 0                  | Shows Stats (Win/Looses) from the author                               |
